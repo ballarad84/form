@@ -1,4 +1,4 @@
-﻿var express=require('express');
+var express=require('express');
 var app=express();
 var fs1=require('fs');
 var bodyParser=require("body-parser");
@@ -56,5 +56,5 @@ app.post("/myget",function(req,res){
 	console.log(req.body);
 	res.send(req.body);
 })
-app.listen(8080);
+app.listen(process.env.PORT||8080);//8080 ми вибираєм порт process.env.PORTтак хероку сам вибирає порт
 console.log("server is running!!!!");
