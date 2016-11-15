@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>cikavo</title>
+	<link rel="stylesheet" href="style.css" type="text/css">
+	<script>
+		
+	window.onload=function(){
+		var ul=document.querySelector("#menu ul");
+		var active=document.querySelector("#menu ul li.active");
+		ul.onclick=function(event){
+			var target=event.target;
+			if(target.tagName!=="LI")return;
+			active=document.querySelector("#menu ul li.active");
+			active.classList.remove("active");
+			target.classList.add("active");
+			loadData(target);
+		}
+		loadData(active);
+		
+		/*postsend.onclick=function(){
+			var xhr=new XMLHttpRequest();
+
+			xhr.open("POST","/postsend",true);
+			xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+			var body="myinput="+encodeURIComponent(p1.value);//encodeURIComponent(p1.value)
+			console.log(body);
+			
+			//text-plain  
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4){
+					alert(xhr.responseText); 
+					return;
+				}
+			}
+			xhr.send(body);
+		}*/
+
+	}
+
+	function loadData(li){
+		var xhr=new XMLHttpRequest();
+		var path;
+		if(li.innerHTML=="lock"){
+			path="/list";
+		}
+		else path="/form";
+		xhr.open('GET',path,true);
+		xhr.send();
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){ 
+				if(li.innerHTML=="lock"){
+					ParseJson(xhr.responseText,content); 
+					return;
+				}
+				content.innerHTML=xhr.responseText;				
+			}
+		}					
+	}
+
+	function ParseJson(file,cont){
+		cont.innerHTML="";
+		file=JSON.parse(file);//отримую масив обєктів
+		var mas=[];
+		for (key in file[0]){
+			mas.push(key);
+		}
+		//console.log(mas);
+		mas.push("");
+		var table=document.createElement("table");
+		cont.appendChild(table);
+		var tr=document.createElement("tr");
+		table.appendChild(tr);
+		for(var i=0;i<mas.length;i++){
+			var td=document.createElement("td");
+			td.innerHTML=mas[i];
+			td.classList.add("header");
+			tr.appendChild(td);
+		}
+
+		for(var i=0;i<file.length;i++){
+			//console.log(file[i]);
+			var tr=document.createElement("tr");
+			table.appendChild(tr);
+			for(var j=0;j<mas.length-1;j++){
+				var td=document.createElement("td");
+				td.innerHTML=file[i][mas[j]];
+				tr.appendChild(td);
+			}
+			var td=document.createElement("td");
+			var btn=document.createElement("button");
+			btn.innerHTML="X Delete";
+			btn.classList.add("btn");
+			td.appendChild(btn);
+			btn.onclick=DelClick;
+			tr.appendChild(td);
+		}
+	}
+
+	function getSend(){
+		var inputs=document.querySelectorAll("form input[type='text']");
+		for(var i=0;i<inputs.length;i++){
+			if(inputs[i].value==""||inputs[i].value==" "){
+				alert("entered all text area");
+				return;
+			}				
+		}
+		var xhr=new XMLHttpRequest();
+		var params="lastname=" + encodeURIComponent(lastname.value) + "&fname=" +  encodeURIComponent(fname.value) + "&salary="+encodeURIComponent(salary.value);
+		xhr.open("GET","/formget?"+params,true);
+		xhr.send();
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				for(var i=0;i<inputs.length;i++){
+					inputs[i].value="";
+				}
+				alert(xhr.responseText);
+				
+			}
+
+		}
+	}
+	/*function DelClick(){
+		if(this.tagName!=="BUTTON")return;
+		var parent=this.parentNode.parentNode;  //отримав тр кнопки шо клікнули
+		var id=parent.rowIndex-1;
+		var xhr=new XMLHttpRequest();
+		var params="id="+encodeURIComponent(id);
+		xhr.open("GET","/formdell?"+params,true);
+		xhr.send();
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				ParseJson(xhr.responseText,content); 
+				return;
+			}
+		}
+		//console.log(id); 
+	} */
+
+	function DelClick(){
+		if(this.tagName!=="BUTTON")return;
+		var parent=this.parentNode.parentNode;  //отримав тр кнопки шо клікнули
+		var id=parent.rowIndex-1;
+
+		var xhr=new XMLHttpRequest();
+		var body="id="+encodeURIComponent(id);
+		xhr.open("POST","/formdellpost",true);
+		//xhr.send(body);//на відміну від GET тут входять параметри
+		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		//стандарний обовязковий заголовок для POST запиту"Content-Type"
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				ParseJson(xhr.responseText,content); 
+				return;
+			}
+		}
+		xhr.send(body);//на відміну від GET тут входять параметри і ставити тре тут
+		//після 
+		//console.log(id); 
+	} 
+
+
+
+	</script>
+</head>
+<body>
+	
+<div id="menu">
+	<ul>
+		<li class="active">lock</li>
+		<li>enter</li>
+	</ul>
+</div>
+<div id="content"></div>
+<!-- <form id="newform" method="GET" action="/myget">
+	<input type="text" id="p1" name="myinput">
+	<input type="text" id="p2" name="myinput1">
+	<input type="button" id="postsend" value="postsend">
+	<input type="submit" value="GET">
+</form> -->
+
+<form id="newform" method="POST" action="/myget">
+	<input type="text" id="p1" name="myinput">
+	<input type="text" id="p2" name="myinput1">
+	<input type="button" id="postsend" value="postsend">
+	<input type="submit" value="POST">
+</form>
+
+</body>
+</html>

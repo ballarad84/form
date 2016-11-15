@@ -1,0 +1,61 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+#menu,#content {
+	width: 800px;
+	background-color: lightgreen;
+	margin: 10px auto;
+	overflow: hidden;
+}
+#content{
+	background-color: lightgrey;
+}
+#menu ul{
+	list-style-type: none;
+}
+#menu ul li{
+	width: 100px;
+	height: 20px;
+	padding: 10px;
+	margin: 10px 0 10px 10px;
+	text-align: center;
+	float: left;
+	background-color: yellow;
+	cursor: pointer;
+	color: red;
+	font-size: 18px;
+}
+#menu ul li.active{
+	background-color: lightblue;
+}
+/* table */
+#content table td{
+	width: 120px;
+	height: 20px;
+	border: 1px dotted black;
+	padding: 5px;
+	font-family: verdana;
+	font-size: 18px;
+	color: blue;
+	font-weight: bold;
+}
+
+.header{
+	background-color: orange;
+	color: black;
+}
+.btn{
+	color: red;
+	padding: 1px;
+	margin:0 auto;
+}
+/*form html*/
+.form input,
+.form label{
+	display: block;
+	width: 250px;
+	height: 20px;
+	margin: 5px auto;
+	text-align: center;
+}
