@@ -1,0 +1,27 @@
+{
+  "name": "myajaxform",
+  "version": "1.0.0",
+  "description": "ajaxform",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ballarad84/form.git"
+  },
+  "keywords": [
+    "form"
+  ],
+  "author": "mykhalchuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ballarad84/form/issues"
+  },
+  "homepage": "https://github.com/ballarad84/form#readme",
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0"
+  }
+}
